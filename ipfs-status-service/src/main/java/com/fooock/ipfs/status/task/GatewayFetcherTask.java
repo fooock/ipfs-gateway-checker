@@ -1,6 +1,7 @@
 package com.fooock.ipfs.status.task;
 
 import com.fooock.ipfs.status.model.Gateway;
+import com.fooock.ipfs.status.repository.GatewayMemoryRepository;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -27,10 +28,12 @@ public class GatewayFetcherTask {
 
     private final RestTemplate restTemplate;
     private final JsonParser jsonParser;
+    private final GatewayMemoryRepository memoryRepository;
 
-    public GatewayFetcherTask(RestTemplate restTemplate, JsonParser jsonParser) {
-        this.restTemplate = restTemplate;
-        this.jsonParser = jsonParser;
+    public GatewayFetcherTask(RestTemplate rest, JsonParser parser, GatewayMemoryRepository repository) {
+        this.restTemplate = rest;
+        this.jsonParser = parser;
+        this.memoryRepository = repository;
     }
 
     /**
@@ -52,6 +55,7 @@ public class GatewayFetcherTask {
         try {
             List<Gateway> gateways = parseBodyResponse(response.getBody());
             log.info("Get {} gateways from public repository", gateways.size());
+            memoryRepository.save(gateways);
 
         } catch (JsonSyntaxException | IllegalStateException e) {
             log.error("Error getting array of gateways from response", e);
