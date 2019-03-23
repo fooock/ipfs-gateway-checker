@@ -3,4 +3,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-rootProject.name = 'ipfs-status-service'
+rootProject.name = 'ipfs-status-task'

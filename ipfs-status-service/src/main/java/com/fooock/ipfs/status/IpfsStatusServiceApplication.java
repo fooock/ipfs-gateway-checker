@@ -1,15 +1,14 @@
 package com.fooock.ipfs.status;
 
+import com.google.gson.JsonParser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 /**
  *
  */
-@EnableScheduling
 @SpringBootApplication
 public class IpfsStatusServiceApplication {
     public static void main(String[] args) {
@@ -19,5 +18,10 @@ public class IpfsStatusServiceApplication {
     @Bean
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public JsonParser getJsonParser() {
+        return new JsonParser();
     }
 }
