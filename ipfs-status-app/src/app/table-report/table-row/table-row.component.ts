@@ -21,7 +21,7 @@ export class TableRowComponent implements OnInit {
     const millis = (this.currentTime - this.gateway.lastUpdate);
     const seconds = Math.floor(millis / 1000);
     if (seconds > 60) {
-      return `> ${Math.floor(seconds / 60)} min.`;
+      return `>${Math.floor(seconds / 60)} min.`;
     }
     return `${seconds} sec.`;
   }
