@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  eventBaseUrl: 'ws://localhost:8082/reports/websocket'
+  eventBaseUrl: 'ws://localhost:8082/reports/websocket',
+  baseUrl: 'http://localhost:8082'
 };
 
 /*
