@@ -1,3 +1,5 @@
-<p>
-  table-report works!
-</p>
+<ul *ngFor="let gateway of getGateways">
+  <li>
+    URL: {{gateway.url}} - Latency: {{gateway.latency}} ms - Response: {{gateway.statusCode}}
+  </li>
+</ul>

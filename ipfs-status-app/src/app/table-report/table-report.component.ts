@@ -12,25 +12,47 @@ import {GatewayService} from './gateway.service';
 })
 export class TableReportComponent implements OnInit, OnDestroy {
   private topicSubscription: Subscription;
+  private gatewaysMap: Map<string, Gateway>;
+  private gateways: Array<Gateway>;
 
   constructor(private ws: RxStompService, private service: GatewayService) {
+    this.gatewaysMap = new Map();
   }
 
   ngOnInit(): void {
+    // First request use gateway service
     this.service.getAllGateways()
       .subscribe((gateways: Array<Gateway>) => {
-        console.log(gateways);
+        this.addToMap(gateways);
       }, (error => {
         console.error(error);
       }));
+
+    // Register web socket watcher to receive updates in real time
     this.topicSubscription = this.ws.watch('/topic/report')
       .subscribe((msg: Message) => {
         const gateway: Gateway = JSON.parse(msg.body);
-        console.log(gateway);
+        this.gatewaysMap.set(gateway.name, gateway);
+        this.updateGateways();
       });
+  }
+
+  private addToMap(gateways: Array<Gateway>): void {
+    gateways.forEach(gateway => {
+      this.gatewaysMap.set(gateway.name, gateway);
+    });
+    this.updateGateways();
+  }
+
+  private updateGateways(): void {
+    this.gateways = Array.from(this.gatewaysMap.values());
   }
 
   ngOnDestroy(): void {
     this.topicSubscription.unsubscribe();
+  }
+
+  get getGateways(): Array<Gateway> {
+    return this.gateways;
   }
 }
