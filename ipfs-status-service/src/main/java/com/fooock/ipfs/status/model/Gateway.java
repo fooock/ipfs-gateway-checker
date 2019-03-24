@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Data
 @RequiredArgsConstructor
-@EqualsAndHashCode(doNotUseGetters = true)
+@EqualsAndHashCode(doNotUseGetters = true, exclude = {"startTime", "latency"})
 public class Gateway {
     private final String name;
 

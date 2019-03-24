@@ -12,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 
 /**
@@ -41,7 +42,7 @@ public class GatewayStatusCheckTask {
     public void check() {
         log.info("Prepared to check gateways...");
 
-        List<Gateway> gateways = memoryRepository.all();
+        Set<Gateway> gateways = memoryRepository.all();
         if (gateways.isEmpty()) {
             log.warn("No gateways found to check...");
             return;

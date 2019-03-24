@@ -4,21 +4,22 @@ import com.fooock.ipfs.status.model.Gateway;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.Set;
 
 /**
  *
  */
 @Repository
 public class GatewayMemoryRepository {
-    private final List<Gateway> memoryDb = new CopyOnWriteArrayList<>();
+    private final Set<Gateway> memoryDb = Collections.synchronizedSet(new HashSet<>());
 
     public void save(List<Gateway> gateways) {
         memoryDb.addAll(gateways);
     }
 
-    public List<Gateway> all() {
-        return Collections.unmodifiableList(memoryDb);
+    public Set<Gateway> all() {
+        return Collections.unmodifiableSet(memoryDb);
     }
 }
