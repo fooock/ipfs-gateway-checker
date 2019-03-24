@@ -1,6 +1,7 @@
 package com.fooock.ipfs.status.task;
 
 import com.fooock.ipfs.status.model.Gateway;
+import com.fooock.ipfs.status.model.Report;
 import com.fooock.ipfs.status.repository.GatewayMemoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.function.Function;
 
 /**
  *
@@ -51,25 +53,42 @@ public class GatewayStatusCheckTask {
                     .uri(checkUrl(gateway.getName()))
                     .exchange();
 
-            clientResponse.doOnRequest(l -> {
-                // Set start time to measure gateway latency
-                gateway.setStartTime(System.currentTimeMillis());
-
-            }).doOnSuccess(response -> gateway.calculateLatency())
-                    .subscribe(response -> onSuccess(gateway, response), error -> onError(gateway, error));
+            clientResponse.doOnRequest(l -> gateway.setStartTime(System.currentTimeMillis()))
+                    .doOnSuccess(response -> gateway.calculateLatency())
+                    .flatMap((Function<ClientResponse, Mono<Report>>) response -> transform(gateway, response))
+                    .subscribe(this::onSuccess, error -> onError(gateway, error));
         });
         log.info("Finished!");
     }
 
     /**
-     * This method is invoked when we get the response of the gateway.
+     * Transform the response from the gateway to a readable structure to send to registered clients
      *
      * @param gateway  Gateway that was checked
      * @param response Web response
+     * @return Report
      */
-    private void onSuccess(Gateway gateway, ClientResponse response) {
-        log.info("Gateway {} has {} ms latency, code={}",
-                gateway.getName(), gateway.getLatency(), response.rawStatusCode());
+    private Mono<Report> transform(Gateway gateway, ClientResponse response) {
+        Report report = new Report();
+        report.setLatency(gateway.getLatency());
+        report.setStatusCode(response.rawStatusCode());
+        report.setName(gateway.getName());
+
+        ClientResponse.Headers headers = response.headers();
+        List<String> corsHeader = headers.header("Access-Control-Allow-Origin");
+        report.setCors(corsHeader);
+
+        return Mono.just(report);
+    }
+
+    /**
+     * This method is invoked when we get the response of the gateway and we are prepared
+     * to sent the report to registered clients.
+     *
+     * @param report Gateway info report
+     */
+    private void onSuccess(Report report) {
+
     }
 
     /**
@@ -79,7 +98,7 @@ public class GatewayStatusCheckTask {
      * @param error   Request error
      */
     private void onError(Gateway gateway, Throwable error) {
-        log.warn("Gateway {} get error {}", gateway.getName(), error.getLocalizedMessage());
+
     }
 
     private String checkUrl(String gatewayUrl) {
