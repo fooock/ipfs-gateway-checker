@@ -94,6 +94,9 @@ public class GatewayFetcherTask {
      * @return Gateway domain name
      */
     private String extractName(String url) {
-        return url.replace("/ipfs/:hash", "").trim();
+        if (url.endsWith("/ipfs/:hash")) {
+            return url.replace("/ipfs/:hash", "").trim();
+        }
+        return url.replace("/:hash", "").trim();
     }
 }
