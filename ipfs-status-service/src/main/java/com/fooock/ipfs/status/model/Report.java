@@ -17,6 +17,7 @@ public class Report {
     private int statusCode;
 
     private String name;
+    private String url;
 
     private List<String> cors;
 }

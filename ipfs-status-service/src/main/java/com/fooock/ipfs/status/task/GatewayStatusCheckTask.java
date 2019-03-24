@@ -24,9 +24,6 @@ import java.util.function.Function;
 public class GatewayStatusCheckTask {
     private final static long ONE_MINUTE = 60000;
 
-    private final static String HASH_CHECK = "Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a";
-    private final static String HASH_CONSTANT = ":hash";
-
     private final GatewayMemoryRepository memoryRepository;
     private final WebClient webClient;
 
@@ -51,7 +48,7 @@ public class GatewayStatusCheckTask {
         gateways.forEach(gateway -> {
 
             Mono<ClientResponse> clientResponse = webClient.get()
-                    .uri(checkUrl(gateway.getName()))
+                    .uri(gateway.getUrl())
                     .exchange();
 
             clientResponse.doOnRequest(l -> gateway.setStartTime(System.currentTimeMillis()))
@@ -74,6 +71,7 @@ public class GatewayStatusCheckTask {
         report.setLatency(gateway.getLatency());
         report.setStatusCode(response.rawStatusCode());
         report.setName(gateway.getName());
+        report.setUrl(gateway.getUrl());
 
         ClientResponse.Headers headers = response.headers();
         List<String> corsHeader = headers.header("Access-Control-Allow-Origin");
@@ -100,9 +98,5 @@ public class GatewayStatusCheckTask {
      */
     private void onError(Gateway gateway, Throwable error) {
 
-    }
-
-    private String checkUrl(String gatewayUrl) {
-        return gatewayUrl.replace(HASH_CONSTANT, HASH_CHECK).trim();
     }
 }

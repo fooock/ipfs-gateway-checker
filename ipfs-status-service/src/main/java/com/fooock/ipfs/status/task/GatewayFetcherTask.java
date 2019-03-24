@@ -23,6 +23,9 @@ import java.util.List;
 @Configuration
 @EnableScheduling
 public class GatewayFetcherTask {
+    private final static String HASH_CHECK = "Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a";
+    private final static String HASH_CONSTANT = ":hash";
+
     private static final String PUBLIC_GATEWAYS_URL =
             "https://raw.githubusercontent.com/ipfs/public-gateway-checker/master/gateways.json";
 
@@ -40,7 +43,7 @@ public class GatewayFetcherTask {
      * Obtain the public list of IPFS gateways. This task is scheduled every hour and the result
      * is saved to an in-memory database to check one by one its status.
      */
-    // @Scheduled(cron = "* 0 * * * *")
+    // @Scheduled(cron = "0 0 * * * *")
     @Scheduled(fixedRate = 10000)
     public void getPublicGateways() {
         ResponseEntity<String> response = restTemplate.getForEntity(PUBLIC_GATEWAYS_URL, String.class);
@@ -65,7 +68,31 @@ public class GatewayFetcherTask {
     private List<Gateway> parseBodyResponse(String body) {
         JsonArray gatewayArray = jsonParser.parse(body).getAsJsonArray();
         List<Gateway> gateways = new ArrayList<>(gatewayArray.size());
-        gatewayArray.forEach(element -> gateways.add(new Gateway(element.getAsString())));
+        gatewayArray.forEach(element -> {
+            String url = element.getAsString();
+            gateways.add(new Gateway(extractName(url), checkUrl(url)));
+        });
         return gateways;
+    }
+
+    /**
+     * Create the url to check the gateway status based in the current gateway url.
+     *
+     * @param gatewayUrl Gateway public url
+     * @return Gateway check url
+     */
+    private String checkUrl(String gatewayUrl) {
+        return gatewayUrl.replace(HASH_CONSTANT, HASH_CHECK).trim();
+    }
+
+    /**
+     * Transform the current gateway url to a readable url name. The result string is
+     * the domain name without any path.
+     *
+     * @param url Gateway public url
+     * @return Gateway domain name
+     */
+    private String extractName(String url) {
+        return url.replace("/ipfs/:hash", "").trim();
     }
 }

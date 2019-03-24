@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(doNotUseGetters = true, exclude = {"startTime", "latency"})
 public class Gateway {
     private final String name;
+    private final String url;
 
     private long startTime;
     private long latency;
