@@ -4,6 +4,7 @@ import com.fooock.ipfs.status.model.Gateway;
 import com.fooock.ipfs.status.model.Report;
 import com.fooock.ipfs.status.repository.GatewayMemoryRepository;
 import com.fooock.ipfs.status.repository.ReportMemoryRepository;
+import com.fooock.ipfs.status.service.WebSocketReportService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -27,13 +28,16 @@ public class GatewayStatusCheckTask {
 
     private final GatewayMemoryRepository gatewayMemoryRepository;
     private final ReportMemoryRepository reportMemoryRepository;
+    private final WebSocketReportService reportService;
     private final WebClient webClient;
 
     public GatewayStatusCheckTask(GatewayMemoryRepository gatewayMemoryRepository,
                                   ReportMemoryRepository reportMemoryRepository,
+                                  WebSocketReportService reportService,
                                   WebClient webClient) {
         this.gatewayMemoryRepository = gatewayMemoryRepository;
         this.reportMemoryRepository = reportMemoryRepository;
+        this.reportService = reportService;
         this.webClient = webClient;
     }
 
@@ -94,6 +98,7 @@ public class GatewayStatusCheckTask {
      */
     private void onSuccess(Report report) {
         reportMemoryRepository.save(report.getName(), report);
+        reportService.sendReport(report);
     }
 
     /**
