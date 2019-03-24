@@ -3,6 +3,7 @@ package com.fooock.ipfs.status.repository;
 import com.fooock.ipfs.status.model.Report;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,5 +20,9 @@ public class ReportMemoryRepository {
             return reportMap.replace(key, report);
         }
         return reportMap.put(key, report);
+    }
+
+    public Collection<Report> all() {
+        return Collections.unmodifiableCollection(reportMap.values());
     }
 }
