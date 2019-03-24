@@ -77,6 +77,7 @@ public class GatewayStatusCheckTask {
         report.setStatusCode(response.rawStatusCode());
         report.setName(gateway.getName());
         report.setUrl(gateway.getUrl());
+        report.setLastUpdate(gateway.getLastUpdate());
 
         ClientResponse.Headers headers = response.headers();
         List<String> corsHeader = headers.header("Access-Control-Allow-Origin");

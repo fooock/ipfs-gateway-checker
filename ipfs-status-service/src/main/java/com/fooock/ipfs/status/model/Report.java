@@ -14,6 +14,8 @@ import java.util.List;
 @EqualsAndHashCode(doNotUseGetters = true)
 public class Report {
     private long latency;
+    private long lastUpdate;
+
     private int statusCode;
 
     private String name;

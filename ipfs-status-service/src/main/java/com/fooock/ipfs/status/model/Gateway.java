@@ -9,15 +9,17 @@ import lombok.RequiredArgsConstructor;
  */
 @Data
 @RequiredArgsConstructor
-@EqualsAndHashCode(doNotUseGetters = true, exclude = {"startTime", "latency"})
+@EqualsAndHashCode(doNotUseGetters = true, exclude = {"startTime", "latency", "lastUpdate"})
 public class Gateway {
     private final String name;
     private final String url;
 
     private long startTime;
+    private long lastUpdate;
     private long latency;
 
     public void calculateLatency() {
-        latency = System.currentTimeMillis() - startTime;
+        lastUpdate = System.currentTimeMillis();
+        latency = lastUpdate - startTime;
     }
 }
