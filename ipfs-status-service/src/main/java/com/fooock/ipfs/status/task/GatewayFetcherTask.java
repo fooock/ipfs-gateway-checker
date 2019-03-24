@@ -23,6 +23,8 @@ import java.util.List;
 @Configuration
 @EnableScheduling
 public class GatewayFetcherTask {
+    private final static long ONE_HOUR = 1000 * 60 * 60;
+
     private final static String HASH_CHECK = "Qmaisz6NMhDB51cCvNWa1GMS7LU1pAxdF4Ld6Ft9kZEP2a";
     private final static String HASH_CONSTANT = ":hash";
 
@@ -43,8 +45,7 @@ public class GatewayFetcherTask {
      * Obtain the public list of IPFS gateways. This task is scheduled every hour and the result
      * is saved to an in-memory database to check one by one its status.
      */
-    // @Scheduled(cron = "0 0 * * * *")
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = ONE_HOUR)
     public void getPublicGateways() {
         ResponseEntity<String> response = restTemplate.getForEntity(PUBLIC_GATEWAYS_URL, String.class);
         if (response.getStatusCode().isError()) {
