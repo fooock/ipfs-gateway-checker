@@ -3,6 +3,7 @@ package com.fooock.ipfs.status.task;
 import com.fooock.ipfs.status.model.Gateway;
 import com.fooock.ipfs.status.model.Report;
 import com.fooock.ipfs.status.repository.GatewayMemoryRepository;
+import com.fooock.ipfs.status.repository.ReportMemoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -24,11 +25,15 @@ import java.util.function.Function;
 public class GatewayStatusCheckTask {
     private final static long ONE_MINUTE = 60000;
 
-    private final GatewayMemoryRepository memoryRepository;
+    private final GatewayMemoryRepository gatewayMemoryRepository;
+    private final ReportMemoryRepository reportMemoryRepository;
     private final WebClient webClient;
 
-    public GatewayStatusCheckTask(GatewayMemoryRepository memoryRepository, WebClient webClient) {
-        this.memoryRepository = memoryRepository;
+    public GatewayStatusCheckTask(GatewayMemoryRepository gatewayMemoryRepository,
+                                  ReportMemoryRepository reportMemoryRepository,
+                                  WebClient webClient) {
+        this.gatewayMemoryRepository = gatewayMemoryRepository;
+        this.reportMemoryRepository = reportMemoryRepository;
         this.webClient = webClient;
     }
 
@@ -39,7 +44,7 @@ public class GatewayStatusCheckTask {
     public void check() {
         log.info("Prepared to check gateways...");
 
-        Set<Gateway> gateways = memoryRepository.all();
+        Set<Gateway> gateways = gatewayMemoryRepository.all();
         if (gateways.isEmpty()) {
             log.warn("No gateways found to check...");
             return;
@@ -87,7 +92,7 @@ public class GatewayStatusCheckTask {
      * @param report Gateway info report
      */
     private void onSuccess(Report report) {
-
+        reportMemoryRepository.save(report.getName(), report);
     }
 
     /**
