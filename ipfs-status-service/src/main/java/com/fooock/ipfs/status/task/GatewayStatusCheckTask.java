@@ -42,7 +42,9 @@ public class GatewayStatusCheckTask {
     }
 
     /**
-     *
+     * Check one by one the gateways fetched from the public gateways repository. This action is
+     * scheduled every minute, and the result is a complete gateway report indicating gateway latency,
+     * last update time, gateway url and cors info.
      */
     @Scheduled(fixedRate = ONE_MINUTE)
     public void check() {
