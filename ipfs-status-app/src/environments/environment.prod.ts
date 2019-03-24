@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  eventBaseUrl: 'wss://ipfs.fooock/v1/api/reports/websocket'
+  eventBaseUrl: 'wss://api.ipfs.fooock/reports/websocket'
 };
