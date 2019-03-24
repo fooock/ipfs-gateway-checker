@@ -1,0 +1,18 @@
+version: '3'
+services:
+  ipfs-status-app:
+    image: fooock/ipfs-status-app
+    container_name: ipfs-status-app
+    ports:
+      - 8081:80
+    depends_on:
+      - ipfs-status-service
+    restart: on-failure
+
+  ipfs-status-service:
+    image: fooock/ipfs-status-service
+    container_name: ipfs-status-service
+    ports:
+      - 8080:8080
+    restart: on-failure
+    
