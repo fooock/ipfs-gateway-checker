@@ -1,7 +1,16 @@
 <div class="container">
-  <ul *ngFor="let gateway of getGateways">
-    <li>
-      <app-table-row [gateway]="gateway"></app-table-row>
-    </li>
-  </ul>
+  <table class="table">
+    <tr>
+      <th>Url</th>
+      <th>Latency</th>
+      <th>Code</th>
+      <th>Updated</th>
+    </tr>
+    <tr *ngFor="let gateway of getGateways">
+      <td>{{gateway.url}}</td>
+      <td>{{gateway.latency}} ms</td>
+      <td>{{gateway.statusCode}}</td>
+      <td>{{getLastUpdate(gateway.lastUpdate)}}</td>
+    </tr>
+  </table>
 </div>

@@ -7,13 +7,11 @@ import {ServiceCommon} from './common/service-common';
 import {TableReportComponent} from './table-report/table-report.component';
 import {GatewayService} from './table-report/gateway.service';
 import {HttpClientModule} from '@angular/common/http';
-import {TableRowComponent} from './table-report/table-row/table-row.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TableReportComponent,
-    TableRowComponent
+    TableReportComponent
   ],
   imports: [
     BrowserModule,

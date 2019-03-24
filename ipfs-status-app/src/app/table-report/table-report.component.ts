@@ -14,6 +14,7 @@ export class TableReportComponent implements OnInit, OnDestroy {
   private topicSubscription: Subscription;
   private gatewaysMap: Map<string, Gateway>;
   private gateways: Array<Gateway>;
+  private currentTime: number;
 
   constructor(private ws: RxStompService, private service: GatewayService) {
     this.gatewaysMap = new Map();
@@ -35,6 +36,11 @@ export class TableReportComponent implements OnInit, OnDestroy {
         this.gatewaysMap.set(gateway.name, gateway);
         this.updateGateways();
       });
+
+    // Update every second
+    setInterval(() => {
+      this.currentTime = new Date().getTime();
+    }, 1000);
   }
 
   private addToMap(gateways: Array<Gateway>): void {
@@ -54,5 +60,14 @@ export class TableReportComponent implements OnInit, OnDestroy {
 
   get getGateways(): Array<Gateway> {
     return this.gateways;
+  }
+
+  public getLastUpdate(lastUpdate: number): string {
+    const millis = (this.currentTime - lastUpdate);
+    const seconds = Math.floor(millis / 1000);
+    if (seconds > 60) {
+      return `>${Math.floor(seconds / 60)} min.`;
+    }
+    return `${seconds} sec.`;
   }
 }
