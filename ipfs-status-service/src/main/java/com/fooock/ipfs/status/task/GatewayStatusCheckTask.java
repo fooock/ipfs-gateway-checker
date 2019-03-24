@@ -51,9 +51,12 @@ public class GatewayStatusCheckTask {
                     .uri(checkUrl(gateway.getName()))
                     .exchange();
 
-            clientResponse.subscribe(
-                    response -> onSuccess(gateway, response),
-                    error -> onError(gateway, error));
+            clientResponse.doOnRequest(l -> {
+                // Set start time to measure gateway latency
+                gateway.setStartTime(System.currentTimeMillis());
+
+            }).doOnSuccess(response -> gateway.calculateLatency())
+                    .subscribe(response -> onSuccess(gateway, response), error -> onError(gateway, error));
         });
         log.info("Finished!");
     }
@@ -65,7 +68,8 @@ public class GatewayStatusCheckTask {
      * @param response Web response
      */
     private void onSuccess(Gateway gateway, ClientResponse response) {
-
+        log.info("Gateway {} has {} ms latency, code={}",
+                gateway.getName(), gateway.getLatency(), response.rawStatusCode());
     }
 
     /**
@@ -75,7 +79,7 @@ public class GatewayStatusCheckTask {
      * @param error   Request error
      */
     private void onError(Gateway gateway, Throwable error) {
-
+        log.warn("Gateway {} get error {}", gateway.getName(), error.getLocalizedMessage());
     }
 
     private String checkUrl(String gatewayUrl) {

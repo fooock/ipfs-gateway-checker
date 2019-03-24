@@ -1,15 +1,22 @@
 package com.fooock.ipfs.status.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
  */
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @EqualsAndHashCode(doNotUseGetters = true)
 public class Gateway {
     private final String name;
+
+    private long startTime;
+    private long latency;
+
+    public void calculateLatency() {
+        latency = System.currentTimeMillis() - startTime;
+    }
 }
