@@ -5,6 +5,8 @@ import {AppComponent} from './app.component';
 import {InjectableRxStompConfig, RxStompService, rxStompServiceFactory} from '@stomp/ng2-stompjs';
 import {ServiceCommon} from './common/service-common';
 import {TableReportComponent} from './table-report/table-report.component';
+import {GatewayService} from './table-report/gateway.service';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -12,7 +14,8 @@ import {TableReportComponent} from './table-report/table-report.component';
     TableReportComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [
     {
@@ -23,7 +26,8 @@ import {TableReportComponent} from './table-report/table-report.component';
       provide: RxStompService,
       useFactory: rxStompServiceFactory,
       deps: [InjectableRxStompConfig]
-    }
+    },
+    GatewayService
   ],
   bootstrap: [AppComponent]
 })
