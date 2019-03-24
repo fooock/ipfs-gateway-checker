@@ -13,6 +13,6 @@ services:
     image: fooock/ipfs-status-service
     container_name: ipfs-status-service
     ports:
-      - 8080:8080
+      - 8082:8082
     restart: on-failure
     
