@@ -1,0 +1,6 @@
+e2e/
+node_modules/
+build/
+.idea/
+out/
+dist/
