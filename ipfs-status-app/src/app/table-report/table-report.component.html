@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container mt-4">
   <table class="table">
     <tr>
       <th>Url</th>
@@ -6,11 +6,21 @@
       <th>Code</th>
       <th>Updated</th>
     </tr>
-    <tr *ngFor="let gateway of getGateways">
-      <td>{{gateway.url}}</td>
-      <td>{{gateway.latency}} ms</td>
-      <td>{{gateway.statusCode}}</td>
-      <td>{{getLastUpdate(gateway.lastUpdate)}}</td>
+    <tr *ngFor="let gateway of getGateways"
+        [ngClass]="{'is-online': gateway.statusCode === 200, 'is-offline': gateway.statusCode !== 200}">
+      <td [ngClass]="{'gateway-name-ok': gateway.statusCode === 200,
+                      'gateway-name-bad': gateway.statusCode !== 200}">
+        {{gateway.url}}</td>
+      <td [ngClass]="{'gateway-name-bad': gateway.statusCode !== 200,
+                      'is-latency-ok': gateway.latency < 1000,
+                      'is-latency-mid': gateway.latency > 1000 && gateway.latency < 5000,
+                      'is-latency-bad': gateway.latency > 5000}">
+        {{gateway.latency}} ms
+      </td>
+      <td [ngClass]="{'gateway-name-ok': gateway.statusCode === 200,
+                      'gateway-name-bad': gateway.statusCode !== 200}">
+        {{gateway.statusCode}}</td>
+      <td class="last-update">{{getLastUpdate(gateway.lastUpdate)}}</td>
     </tr>
   </table>
 </div>
