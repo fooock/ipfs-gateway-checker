@@ -58,7 +58,7 @@ public class GatewayStatusCheckTask {
         log.info("Checking {} gateways", gateways.size());
         gateways.forEach(gateway -> {
 
-            Mono<ClientResponse> clientResponse = webClient.get()
+            Mono<ClientResponse> clientResponse = webClient.head()
                     .uri(gateway.getUrl())
                     .exchange();
 
