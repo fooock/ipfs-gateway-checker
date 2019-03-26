@@ -73,4 +73,12 @@ export class TableReportComponent implements OnInit, OnDestroy {
     }
     return `${seconds} sec.`;
   }
+
+  public getLatency(latency: number): string {
+    if (latency < 10000) {
+      // latency < 10 seconds
+      return `${latency} ms`;
+    }
+    return `${Math.floor(latency / 1000)} sec`;
+  }
 }

@@ -15,7 +15,7 @@
                       'is-latency-ok': gateway.latency < 1000,
                       'is-latency-mid': gateway.latency > 1000 && gateway.latency < 5000,
                       'is-latency-bad': gateway.latency > 5000}">
-        {{gateway.latency}} ms
+        {{getLatency(gateway.latency)}}
       </td>
       <td [ngClass]="{'gateway-name-ok': gateway.statusCode === 200,
                       'gateway-name-bad': gateway.statusCode !== 200}">
