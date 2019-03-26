@@ -26,4 +26,9 @@ public class IpfsGatewayController {
     public Collection<Report> all() {
         return reportMemoryRepository.all();
     }
+
+    @GetMapping("/online")
+    public Collection<Report> findOnline() {
+        return reportMemoryRepository.findOnline();
+    }
 }

@@ -17,6 +17,7 @@ public class Report {
     private long lastUpdate;
 
     private int statusCode;
+    private int writable;
 
     private String name;
     private String url;

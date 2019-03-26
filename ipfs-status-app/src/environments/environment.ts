@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  eventBaseUrl: 'wss://api.ipfs.fooock.com/reports/websocket',
-  baseUrl: 'https://api.ipfs.fooock.com'
+  eventBaseUrl: 'ws://localhost:8082/reports/websocket',
+  baseUrl: 'http://localhost:8082'
 };
 
 /*
