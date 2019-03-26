@@ -25,6 +25,7 @@ import java.util.function.Function;
 @Slf4j
 public class GatewayStatusCheckTask {
     private final static long ONE_MINUTE = 60000;
+    private final static long TEN_SECONDS = 20 * 1000;
 
     private final GatewayMemoryRepository gatewayMemoryRepository;
     private final ReportMemoryRepository reportMemoryRepository;
@@ -46,7 +47,7 @@ public class GatewayStatusCheckTask {
      * scheduled every minute, and the result is a complete gateway report indicating gateway latency,
      * last update time, gateway url and cors info.
      */
-    @Scheduled(fixedRate = ONE_MINUTE)
+    @Scheduled(fixedRate = ONE_MINUTE, initialDelay = TEN_SECONDS)
     public void check() {
         log.info("Prepared to check gateways...");
 
