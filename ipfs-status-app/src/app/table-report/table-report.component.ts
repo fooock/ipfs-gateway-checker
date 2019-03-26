@@ -65,6 +65,9 @@ export class TableReportComponent implements OnInit, OnDestroy {
   public getLastUpdate(lastUpdate: number): string {
     const millis = (this.currentTime - lastUpdate);
     const seconds = Math.floor(millis / 1000);
+    if (seconds === undefined || isNaN(seconds) || seconds < 0) {
+      return '-';
+    }
     if (seconds > 60) {
       return `>${Math.floor(seconds / 60)} min.`;
     }
