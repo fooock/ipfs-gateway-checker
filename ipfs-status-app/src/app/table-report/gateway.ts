@@ -5,6 +5,7 @@ export class Gateway {
   latency: number;
   lastUpdate: number;
   statusCode: number;
+  writable: number;
 
   cors: Array<string>;
 }

@@ -44,3 +44,15 @@ ul {
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
   border-top: 1px solid #eeeeee;
 }
+
+.fa-question-circle {
+  color: #1976d2;
+}
+
+.fa-minus-circle {
+  color: #c62828;
+}
+
+.fa-check-circle {
+  color: #558b2f;
+}
