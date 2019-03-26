@@ -11,6 +11,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode(doNotUseGetters = true, exclude = {"startTime", "latency", "lastUpdate"})
 public class Gateway {
+    public static final int GATEWAY_WRITABLE = 0;
+    public static final int GATEWAY_NO_WRITABLE = 1;
+    public static final int GATEWAY_WRITABLE_UNKNOWN = 2;
+
     private final String name;
     private final String url;
 

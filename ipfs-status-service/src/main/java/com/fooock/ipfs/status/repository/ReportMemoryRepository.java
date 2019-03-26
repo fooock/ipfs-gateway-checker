@@ -30,4 +30,12 @@ public class ReportMemoryRepository {
         }
         return onlineGateways;
     }
+
+    public boolean exists(String key) {
+        return reportMap.containsKey(key);
+    }
+
+    public Report get(String key) {
+        return reportMap.get(key);
+    }
 }

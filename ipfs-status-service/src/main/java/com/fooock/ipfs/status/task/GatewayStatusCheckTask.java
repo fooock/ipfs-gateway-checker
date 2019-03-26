@@ -90,6 +90,10 @@ public class GatewayStatusCheckTask {
         List<String> corsHeader = headers.header("Access-Control-Allow-Origin");
         report.setCors(corsHeader);
 
+        // If exists gateway report, return the writable state
+        if (reportMemoryRepository.exists(gateway.getName()))
+            report.setWritable(reportMemoryRepository.get(gateway.getName()).getWritable());
+
         return Mono.just(report);
     }
 

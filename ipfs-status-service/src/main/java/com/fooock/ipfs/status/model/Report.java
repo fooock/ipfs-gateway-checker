@@ -17,7 +17,7 @@ public class Report {
     private long lastUpdate;
 
     private int statusCode;
-    private int writable;
+    private int writable = Gateway.GATEWAY_WRITABLE_UNKNOWN;
 
     private String name;
     private String url;
