@@ -61,6 +61,6 @@ ul {
   color: #558b2f;
 }
 
-.table {
-  word-break: break-all
+.cell-end {
+  text-align: end;
 }
