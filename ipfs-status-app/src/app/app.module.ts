@@ -8,12 +8,14 @@ import {TableReportComponent} from './table-report/table-report.component';
 import {GatewayService} from './table-report/gateway.service';
 import {HttpClientModule} from '@angular/common/http';
 import {HeaderComponent} from './header/header.component';
+import {FooterComponent} from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableReportComponent,
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
