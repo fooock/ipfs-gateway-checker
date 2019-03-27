@@ -12,6 +12,8 @@ import {GatewayService} from './gateway.service';
 })
 export class TableReportComponent implements OnInit, OnDestroy {
   private topicSubscription: Subscription;
+  private timeUpdater;
+
   private gatewaysMap: Map<string, Gateway>;
   private gateways: Array<Gateway>;
   private currentTime: number;
@@ -38,7 +40,7 @@ export class TableReportComponent implements OnInit, OnDestroy {
       });
 
     // Update every second
-    setInterval(() => {
+    this.timeUpdater = setInterval(() => {
       this.currentTime = new Date().getTime();
     }, 1000);
   }
@@ -68,6 +70,7 @@ export class TableReportComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.topicSubscription.unsubscribe();
+    clearInterval(this.timeUpdater);
   }
 
   get getGateways(): Array<Gateway> {
