@@ -50,8 +50,20 @@ export class TableReportComponent implements OnInit, OnDestroy {
     this.updateGateways();
   }
 
+  /**
+   * Update gateways array sorted by latency
+   */
   private updateGateways(): void {
-    this.gateways = Array.from(this.gatewaysMap.values());
+    this.gateways = Array.from(this.gatewaysMap.values())
+      .sort(((a, b) => {
+        if (a.latency > b.latency) {
+          return 1;
+        }
+        if (a.latency < b.latency) {
+          return -1;
+        }
+        return 0;
+      }));
   }
 
   ngOnDestroy(): void {
