@@ -60,3 +60,7 @@ ul {
 .fa-check-circle {
   color: #558b2f;
 }
+
+.table {
+  word-break: break-all
+}
