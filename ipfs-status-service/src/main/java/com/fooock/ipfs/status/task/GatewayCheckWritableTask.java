@@ -69,8 +69,7 @@ public class GatewayCheckWritableTask {
     }
 
     private void writableGateway(Report gateway, int writableStatus) {
-        gateway.setWritable(writableStatus);
-        reportMemoryRepository.save(gateway.getName(), gateway);
+        reportMemoryRepository.updateWritableState(gateway.getName(), writableStatus);
     }
 
     private String buildPostUrl(String name) {

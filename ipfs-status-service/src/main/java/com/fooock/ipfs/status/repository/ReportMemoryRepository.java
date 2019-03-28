@@ -12,7 +12,7 @@ import java.util.*;
 public class ReportMemoryRepository {
     private final Map<String, Report> reportMap = Collections.synchronizedMap(new HashMap<>());
 
-    public Report save(String key, Report report) {
+    public synchronized Report save(String key, Report report) {
         if (reportMap.containsKey(key)) {
             return reportMap.replace(key, report);
         }
@@ -20,7 +20,7 @@ public class ReportMemoryRepository {
     }
 
     public Collection<Report> all() {
-        return Collections.unmodifiableCollection(reportMap.values());
+        return reportMap.values();
     }
 
     public List<Report> findOnline() {
@@ -37,5 +37,9 @@ public class ReportMemoryRepository {
 
     public Report get(String key) {
         return reportMap.get(key);
+    }
+
+    public void updateWritableState(String key, int state) {
+        reportMap.get(key).setWritable(state);
     }
 }
