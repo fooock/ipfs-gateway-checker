@@ -5,19 +5,13 @@ import com.fooock.ipfs.status.model.Report;
 import com.fooock.ipfs.status.repository.ReportMemoryRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.function.Function;
 
 /**
  * Check if the public gateway has public writable access
@@ -52,27 +46,38 @@ public class GatewayCheckWritableTask {
         log.info("Check writable state of {} gateways...", online.size());
         online.forEach(gateway -> {
 
-            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            body.add("file", new ClassPathResource("writable.txt"));
-
             Mono<ClientResponse> clientResponse = webClient.post()
                     .uri(buildPostUrl(gateway.getName()))
-                    .headers(httpHeaders -> httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA))
-                    .body(BodyInserters.fromMultipartData(body))
                     .exchange();
 
             clientResponse
-                    .flatMap((Function<ClientResponse, Mono<String>>) response -> response.bodyToMono(String.class))
-                    .subscribe(s -> writableGateway(gateway, Gateway.GATEWAY_WRITABLE), throwable -> writableGateway(gateway, Gateway.GATEWAY_NO_WRITABLE));
+                    .subscribe(s -> checkGatewayResponse(gateway, s), throwable -> updateWritableState(gateway, Gateway.GATEWAY_NO_WRITABLE));
         });
         log.info("Finish writable check!");
     }
 
-    private void writableGateway(Report gateway, int writableStatus) {
+    /**
+     * Check gateway writable response. If the response is 2xx then the gateway is writable, otherwise,
+     * it isn't.
+     *
+     * @param gateway  Current checked gateway
+     * @param response Gateway response
+     */
+    private void checkGatewayResponse(Report gateway, ClientResponse response) {
+        if (response.statusCode().is2xxSuccessful()) {
+            log.info("Gateway {} is writable (response = {})", gateway.getName(), response.rawStatusCode());
+            updateWritableState(gateway, Gateway.GATEWAY_WRITABLE);
+            return;
+        }
+        log.info("Gateway {} is not writable (response = {})", gateway.getName(), response.rawStatusCode());
+        updateWritableState(gateway, Gateway.GATEWAY_NO_WRITABLE);
+    }
+
+    private void updateWritableState(Report gateway, int writableStatus) {
         reportMemoryRepository.updateWritableState(gateway.getName(), writableStatus);
     }
 
     private String buildPostUrl(String name) {
-        return String.format("%s:5001/api/v0/add", name);
+        return String.format("%s/ipfs/", name);
     }
 }
