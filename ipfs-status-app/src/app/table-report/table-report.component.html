@@ -2,10 +2,10 @@
   <table class="table">
     <tr>
       <th>Url</th>
-      <th>Latency</th>
-      <th>W</th>
-      <th>Code</th>
-      <th>Updated</th>
+      <th class="cell-end">Latency</th>
+      <th class="cell-end">W</th>
+      <th class="cell-end">Code</th>
+      <th class="cell-end">Updated</th>
     </tr>
     <tr *ngFor="let gateway of getGateways"
         [ngClass]="{'is-online': gateway.statusCode === 200, 'is-offline': gateway.statusCode !== 200}">
