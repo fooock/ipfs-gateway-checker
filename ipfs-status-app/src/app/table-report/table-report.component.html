@@ -11,7 +11,8 @@
         [ngClass]="{'is-online': gateway.statusCode === 200, 'is-offline': gateway.statusCode !== 200}">
       <td [ngClass]="{'gateway-name-ok': gateway.statusCode === 200,
                       'gateway-name-bad': gateway.statusCode !== 200}">
-        {{gateway.url}}</td>
+        <a [href]="gateway.url" target="_blank">{{gateway.url}}</a>
+      </td>
       <td [ngClass]="{'gateway-name-bad': gateway.statusCode !== 200,
                       'is-latency-ok': gateway.latency < 1000,
                       'is-latency-mid': gateway.latency > 1000 && gateway.latency < 5000,
@@ -26,7 +27,9 @@
       <td [ngClass]="{'gateway-name-ok': gateway.statusCode === 200,
                       'gateway-name-bad': gateway.statusCode !== 200}" class="cell-end">
         {{gateway.statusCode}}</td>
-      <td class="last-update cell-end">{{getLastUpdate(gateway.lastUpdate)}}</td>
+      <td class="last-update cell-end">
+        {{getLastUpdate(gateway.lastUpdate)}}
+      </td>
     </tr>
   </table>
 </div>

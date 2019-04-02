@@ -64,3 +64,8 @@ ul {
 .cell-end {
   text-align: end;
 }
+
+td a {
+  color: inherit;
+  text-decoration: inherit;
+}
