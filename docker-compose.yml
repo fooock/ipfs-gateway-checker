@@ -4,7 +4,7 @@ services:
     image: fooock/ipfs-status-app
     container_name: ipfs-status-app
     ports:
-      - 8081:80
+      - 127.0.0.1:8081:80
     depends_on:
       - ipfs-status-service
     restart: on-failure
@@ -13,6 +13,6 @@ services:
     image: fooock/ipfs-status-service
     container_name: ipfs-status-service
     ports:
-      - 8082:8082
+      - 127.0.0.1:8082:8082
     restart: on-failure
     
