@@ -4,6 +4,6 @@
 
 >Project in early development
 
-Check public IPFS gateway status, including gateway latency and writable status. The latest version of this app is published to IPFS and is accessible through `QmXHzertynCrRi9A99JH1fbxLATtGCaU4L3gkLo6ov9JEW`. 
+Check public IPFS gateway status, including gateway latency and writable status. The latest version of this app is published to IPFS and is accessible through `QmV8dDdfXEiEznLNesKynBpEvhipLUv5HjWYEUpDB7buHZ`. 
 
-For example, you can check it using the official IPFS public gateway in [`https://gateway.ipfs.io/ipfs/QmXHzertynCrRi9A99JH1fbxLATtGCaU4L3gkLo6ov9JEW`](https://gateway.ipfs.io/ipfs/QmXHzertynCrRi9A99JH1fbxLATtGCaU4L3gkLo6ov9JEW)
+For example, you can check it using the official IPFS public gateway in [`https://gateway.ipfs.io/ipfs/QmV8dDdfXEiEznLNesKynBpEvhipLUv5HjWYEUpDB7buHZ`](https://gateway.ipfs.io/ipfs/QmV8dDdfXEiEznLNesKynBpEvhipLUv5HjWYEUpDB7buHZ)
