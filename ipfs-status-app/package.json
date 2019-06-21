@@ -27,7 +27,8 @@
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26",
     "handlebars": ">=4.1.2",
-    "js-yaml": ">=3.13.1"
+    "js-yaml": ">=3.13.1",
+    "fstream": ">=1.0.12"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",
