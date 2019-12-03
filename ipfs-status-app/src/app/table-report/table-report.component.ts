@@ -96,4 +96,9 @@ export class TableReportComponent implements OnInit, OnDestroy {
     }
     return `${Math.floor(latency / 1000)} sec`;
   }
+
+  public shortName(gateway: Gateway): string {
+    if (gateway.url.length > 80) return gateway.url.substring(0, 80) + "..."
+    return gateway.url
+  }
 }
