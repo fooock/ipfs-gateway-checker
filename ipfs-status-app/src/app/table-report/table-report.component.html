@@ -11,7 +11,7 @@
         [ngClass]="{'is-online': gateway.statusCode === 200, 'is-offline': gateway.statusCode !== 200}">
       <td [ngClass]="{'gateway-name-ok': gateway.statusCode === 200,
                       'gateway-name-bad': gateway.statusCode !== 200}">
-        <a [href]="gateway.url" target="_blank">{{gateway.name}}</a>
+        <a [href]="gateway.url" target="_blank">{{gateway.shortName()}}</a>
       </td>
       <td [ngClass]="{'gateway-name-bad': gateway.statusCode !== 200,
                       'is-latency-ok': gateway.latency < 1000,
