@@ -36,7 +36,7 @@ public class GatewayCheckWritableTask {
      */
     @Scheduled(fixedRate = THREE_HOURS, initialDelay = ONE_MINUTE)
     public void checkWritable() {
-        log.info("Prepared to check writable nodes...");
+        log.debug("Prepared to check writable nodes...");
 
         List<Report> online = reportMemoryRepository.findOnline();
         if (online.isEmpty()) {
@@ -50,10 +50,10 @@ public class GatewayCheckWritableTask {
                     .uri(buildPostUrl(gateway.getName()))
                     .exchange();
 
-            clientResponse
-                    .subscribe(s -> checkGatewayResponse(gateway, s), throwable -> updateWritableState(gateway, Gateway.GATEWAY_NO_WRITABLE));
+            clientResponse.subscribe(s -> checkGatewayResponse(gateway, s),
+              throwable -> updateWritableState(gateway, Gateway.GATEWAY_NO_WRITABLE));
         });
-        log.info("Finish writable check!");
+        log.debug("Finish writable check!");
     }
 
     /**
@@ -65,11 +65,11 @@ public class GatewayCheckWritableTask {
      */
     private void checkGatewayResponse(Report gateway, ClientResponse response) {
         if (response.statusCode().is2xxSuccessful()) {
-            log.info("Gateway {} is writable (response = {})", gateway.getName(), response.rawStatusCode());
+            log.debug("Gateway {} is writable (response = {})", gateway.getName(), response.rawStatusCode());
             updateWritableState(gateway, Gateway.GATEWAY_WRITABLE);
             return;
         }
-        log.info("Gateway {} is not writable (response = {})", gateway.getName(), response.rawStatusCode());
+        log.debug("Gateway {} is not writable (response = {})", gateway.getName(), response.rawStatusCode());
         updateWritableState(gateway, Gateway.GATEWAY_NO_WRITABLE);
     }
 

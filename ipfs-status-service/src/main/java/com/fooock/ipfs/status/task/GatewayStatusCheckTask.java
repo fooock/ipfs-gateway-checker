@@ -49,7 +49,7 @@ public class GatewayStatusCheckTask {
      */
     @Scheduled(fixedRate = ONE_MINUTE, initialDelay = TEN_SECONDS)
     public void check() {
-        log.info("Prepared to check gateways...");
+        log.debug("Prepared to check gateways...");
 
         Set<Gateway> gateways = gatewayMemoryRepository.all();
         if (gateways.isEmpty()) {
@@ -68,7 +68,7 @@ public class GatewayStatusCheckTask {
                     .flatMap((Function<ClientResponse, Mono<Report>>) response -> transform(gateway, response))
                     .subscribe(this::onSuccess, error -> onError(gateway, error));
         });
-        log.info("Finished!");
+        log.debug("Finished!");
     }
 
     /**

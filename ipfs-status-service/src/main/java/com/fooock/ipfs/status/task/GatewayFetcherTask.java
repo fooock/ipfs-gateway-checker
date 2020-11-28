@@ -62,7 +62,7 @@ public class GatewayFetcherTask {
             memoryRepository.save(gateways);
 
         } catch (JsonSyntaxException | IllegalStateException e) {
-            log.error("Error getting array of gateways from response", e);
+            log.error("Error getting array of gateways from response: {}", e.getMessage());
         }
     }
 
